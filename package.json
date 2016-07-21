@@ -1,0 +1,16 @@
+{
+  "name": "@lxndr/di",
+  "version": "1.0.0",
+  "description": "Dependency injector for Node.js",
+  "main": "src/di.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lxndr",
+  "license": "MIT",
+  "dependencies": {
+    "babel-plugin-transform-class-properties": "^6.10.2",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3"
+  }
+}
