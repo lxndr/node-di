@@ -1,4 +1,8 @@
-import {Container, inject} from '../src/di';
+import {bootstrap, inject} from '../src/di';
+
+class Child1 {
+  @inject(Parent) parent;
+}
 
 class B {
   tell() {
