@@ -75,15 +75,12 @@ export function inject(type, options = {}) {
           return currentContainer.create(prop.type);
         };
       } else {
-        console.log('prop:', key);
         delete desc.initializer;
         delete desc.writable;
         desc.get = function () {
-          console.log('get:', key);
           return currentContainer.resolve(prop.type);
         };
         desc.set = function (instance) {
-          console.log('set:', key);
           currentContainer.set(prop.type, instance);
         };
       }
