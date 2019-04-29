@@ -2,10 +2,11 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
-    clean: [
-      'dist',
-      'lib'
-    ],
+    clean: {
+      files: [
+        'lib'
+      ]
+    },
 
     eslint: {
       files: 'src/**/*.js'
@@ -29,6 +30,15 @@ module.exports = function (grunt) {
           src: '**/*.js',
           dest: 'lib'
         }]
+      },
+      options: {
+        presets: [
+          '@babel/preset-env'
+        ],
+        plugins: [
+          '@babel/proposal-decorators',
+          '@babel/proposal-class-properties'
+        ]
       }
     }
   });

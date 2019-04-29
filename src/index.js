@@ -1,4 +1,4 @@
-const $meta = Symbol('di metadata');
+const $meta = Symbol('di');
 let currentContainer = null;
 
 export class Container {
@@ -24,15 +24,8 @@ export class Container {
 
     if (provider.useValue === undefined) {
       const Class = provider.useClass;
-      const cons = Class.prototype.constructor;
-
-      if (cons.length > 0) {
-        console.log(`Class provider ${cons.name} has ${cons.length} arguments`);
-        provider.useValue = null;
-      } else {
-        currentContainer = this;
-        provider.useValue = new Class();
-      }
+      currentContainer = this;
+      provider.useValue = new Class();
     }
 
     return provider.useValue;
@@ -61,31 +54,27 @@ function init(proto) {
 
 export function inject(type, options = {}) {
   return function (target, key, desc) {
-    if (key) {
-      const prop = {
-        name: key,
-        type,
-        newInstance: options.newInstance
-      };
-      const meta = init(target);
-      meta.props.push(prop);
+    const prop = {
+      name: key,
+      type,
+      newInstance: options.newInstance
+    };
+    const meta = init(target);
+    meta.props.push(prop);
 
-      if (prop.newInstance) {
-        desc.initializer = function () {
-          return currentContainer.create(prop.type);
-        };
-      } else {
-        delete desc.initializer;
-        delete desc.writable;
-        desc.get = function () {
-          return currentContainer.resolve(prop.type);
-        };
-        desc.set = function (instance) {
-          currentContainer.set(prop.type, instance);
-        };
-      }
+    if (prop.newInstance) {
+      desc.initializer = function () {
+        return currentContainer.create(prop.type);
+      };
     } else {
-      const meta = init(target.prototype);
+      delete desc.initializer;
+      delete desc.writable;
+      desc.get = function () {
+        return currentContainer.resolve(prop.type);
+      };
+      desc.set = function (instance) {
+        currentContainer.set(prop.type, instance);
+      };
     }
   };
 }
